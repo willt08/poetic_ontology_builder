@@ -1,0 +1,5 @@
+transformers
+owlready2
+google-generativeai
+pyvis
+matplotlib
