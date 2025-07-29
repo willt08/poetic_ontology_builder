@@ -1,6 +1,7 @@
+--only-binary=:all: owlready2,pyvis,matplotlib,transformers
 transformers>=4.46.0
-google-generativeai>=0.7.0
+owlready2<0.48
 pyvis>=0.3.2
 matplotlib>=3.8.0
-owlready2<0.48    # Avoids source build & license field issue
+google-generativeai>=0.1.0rc1
 
