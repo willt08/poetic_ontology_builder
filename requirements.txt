@@ -1,6 +1,6 @@
 --only-binary=:all: transformers,pyvis,matplotlib
 transformers>=4.46.0
-owlready2>=0.48
+owlready2
 pyvis>=0.3.2
 matplotlib>=3.8.0
 google-generativeai>=0.1.0rc1
