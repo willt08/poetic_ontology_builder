@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poetic_ontology_builder"
+version = "1.0.1"
+description = "A tool for generating ontological knowledge graphs with emotional embeddings from text."
+authors = [
+    { name = "Willinton Triana Cardona" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["ontology", "emotions", "knowledge graph", "AI", "poetic computing"]
+
+dependencies = [
+    "transformers>=4.32.0",
+    "torch>=2.0.0",
+    "matplotlib",
+    "pyvis",
+    "owlready2",
+    "python-dotenv",
+    "google-generativeai",
+]
+
+[project.urls]
+Homepage = "https://huggingface.co/willt-dc/Rosa-V1"
+Repository = "https://huggingface.co/willt-dc/Rosa-V1"
+
+[project.scripts]
+poetic-ontology = "poetic_ontology_builder.cli:main"
