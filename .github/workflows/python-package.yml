@@ -13,6 +13,11 @@ jobs:
         with:
           python-version: "3.8"
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cython3
+
       - name: Cache pip
         uses: actions/cache@v3
         with:
