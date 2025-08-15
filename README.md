@@ -46,9 +46,7 @@ It combines **large language models** for knowledge extraction (Gemini), **Rosa*
 Clone the repository and install in editable mode:
 
 ```bash
-git clone https://github.com/yourusername/poetic_ontology_builder.git
-cd poetic_ontology_builder
-pip install -e .
+pip install poetic-ontology-builder
 ```
 
 ---
