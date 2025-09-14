@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" xintegrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" xintegrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
+        
+        <style type="text/css">
+             body {
+                 font-family: 'Lora', serif;
+                 background-color: #333;
+                 margin: 0;
+                 padding: 0;
+             }
+
+             #mynetwork {
+                 width: 100%;
+                 height: 100vh; /* Full viewport height */
+                 /* A dark overlay is applied via a gradient to make the graph readable */
+                 background-image: linear-gradient(rgba(40, 40, 40, 0.7), rgba(40, 40, 40, 0.7)), url('https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg');
+                 background-size: cover;
+                 background-position: center center;
+                 border: none;
+             }
+             
+             #config {
+                 display: none; /* Hiding config for a cleaner presentation */
+             }
+        </style>
+    </head>
+
+    <body>
+        <div id="mynetwork"></div>
+        <div id="config"></div>
+
+        <script type="text/javascript">
+              // This method is responsible for drawing the graph
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  // --- Color Palette Inspired by "Creation of Adam" ---
+                  const colors = {
+                      sky: '#d4d6d6', 
+                      godsCloak: '#b76e79',
+                      adamEarth: '#8a8e6f',
+                      skinTones: '#ddc5b1',
+                      shadow: '#5a524a',
+                      anger: '#c88a8a',
+                      curiosity: '#d3c8b4',
+                      desire: '#d29a72',
+                  };
+
+                  /**
+                   * Generates a Data URI for an SVG of a sphere with a radial gradient.
+                   * @param {string} color The base color of the sphere.
+                   * @returns {string} The Data URI for the SVG image.
+                   */
+                  function generateSphereDataUri(color) {
+                      const highlightColor = "rgba(255,255,255,0.7)";
+                      const svg = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+                            <defs>
+                                <radialGradient id="sphereGradient" cx="35%" cy="35%" r="65%">
+                                    <stop offset="0%" stop-color="${highlightColor}" />
+                                    <stop offset="100%" stop-color="${color}" />
+                                </radialGradient>
+                            </defs>
+                            <circle cx="100" cy="100" r="100" fill="url(#sphereGradient)" />
+                        </svg>`;
+                      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+                  }
+
+
+                  // --- Node and Edge Data ---
+                  let rawNodes = [{"color": "#00CED1", "id": "I", "label": "I", "title": "\u003cb\u003eI\u003c/b\u003e\u003cbr\u003eEmotion: curiosity\u003cbr\u003eQualifier: hypothetical"}, {"color": "#00CED1", "id": "Angel\u0027s potent being", "label": "Angel\u0027s potent being", "title": "\u003cb\u003eAngel\u0027s potent being\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#FF0000", "id": "beauty", "label": "beauty", "title": "\u003cb\u003ebeauty\u003c/b\u003e\u003cbr\u003eEmotion: anger\u003cbr\u003eQualifier: evaluative"}, {"color": "#FF0000", "id": "the beginning of terror", "label": "the beginning of terror", "title": "\u003cb\u003ethe beginning of terror\u003c/b\u003e\u003cbr\u003eEmotion: anger"}, {"color": "#00CED1", "id": "we", "label": "we", "title": "\u003cb\u003ewe\u003c/b\u003e\u003cbr\u003eEmotion: curiosity\u003cbr\u003eQualifier: evaluative, subjective"}, {"color": "#00CED1", "id": "terror", "label": "terror", "title": "\u003cb\u003eterror\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#FF1493", "id": "to destroy us", "label": "to destroy us", "title": "\u003cb\u003eto destroy us\u003c/b\u003e\u003cbr\u003eEmotion: desire"}, {"color": "#00CED1", "id": "every Angel", "label": "every Angel", "title": "\u003cb\u003eevery Angel\u003c/b\u003e\u003cbr\u003eQualifier: evaluative, descriptive"}, {"color": "#00CED1", "id": "terrifying", "label": "terrifying", "title": "\u003cb\u003eterrifying\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#00CED1", "id": "myself", "label": "myself", "title": "\u003cb\u003emyself\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#00CED1", "id": "call note of dark sobbing", "label": "call note of dark sobbing", "title": "\u003cb\u003ecall note of dark sobbing\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#00CED1", "id": "Angels", "label": "Angels", "title": "\u003cb\u003eAngels\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#00CED1", "id": "humans", "label": "humans", "title": "\u003cb\u003ehumans\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#00CED1", "id": "animals", "label": "animals", "title": "\u003cb\u003eanimals\u003c/b\u003e\u003cbr\u003eQualifier: descriptive, observational"}, {"color": "#00CED1", "id": "how little at home we are in the interpreted world", "label": "how little at home we are in the interpreted world", "title": "\u003cb\u003ehow little at home we are in the interpreted world\u003c/b\u003e\u003cbr\u003eEmotion: curiosity"}, {"color": "#FF0000", "id": "little at home in the interpreted world", "label": "little at home in the interpreted world", "title": "\u003cb\u003elittle at home in the interpreted world\u003c/b\u003e\u003cbr\u003eEmotion: anger"}];
+                  
+                  // Map original colors to the new palette and create sphere nodes
+                  const styledNodes = rawNodes.map(node => {
+                      let newColor;
+                      switch(node.color) {
+                          case '#FF0000': newColor = colors.anger; break;
+                          case '#FF1493': newColor = colors.desire; break;
+                          case '#00CED1': 
+                          default:
+                              newColor = colors.curiosity; break;
+                      }
+                      return {
+                          ...node,
+                          shape: 'image',
+                          image: generateSphereDataUri(newColor),
+                          size: 35, // Larger spheres
+                          font: {
+                              color: '#f0e6d8', // A light, warm parchment color
+                              size: 16,
+                              strokeWidth: 2, // A slight stroke to help readability
+                              strokeColor: '#333'
+                          },
+                      };
+                  });
+                  
+                  const nodes = new vis.DataSet(styledNodes);
+                  const edges = new vis.DataSet([{"arrows": "to", "from": "I", "label": "would be consumed by", "to": "Angel\u0027s potent being"}, {"arrows": "to", "from": "beauty", "label": "is", "to": "the beginning of terror"}, {"arrows": "to", "from": "we", "label": "can endure", "to": "terror"}, {"arrows": "to", "from": "beauty", "label": "disdains", "to": "to destroy us"}, {"arrows": "to", "from": "every Angel", "label": "is", "to": "terrifying"}, {"arrows": "to", "from": "I", "label": "grip", "to": "myself"}, {"arrows": "to", "from": "I", "label": "choke down", "to": "call note of dark sobbing"}, {"arrows": "to", "from": "we", "label": "can turn to", "to": "Angels"}, {"arrows": "to", "from": "we", "label": "can turn to", "to": "humans"}, {"arrows": "to", "from": "animals", "label": "see", "to": "how little at home we are in the interpreted world"}, {"arrows": "to", "from": "we", "label": "are", "to": "little at home in the interpreted world"}]);
+                  const data = {nodes: nodes, edges: edges};
+
+                  // --- Graph Options ---
+                  const options = {
+                      edges: {
+                          color: {
+                              color: 'rgba(244, 241, 234, 0.7)', // Semi-transparent parchment
+                              highlight: colors.godsCloak,
+                          },
+                          font: {
+                              color: '#f0e6d8',
+                              size: 14,
+                              strokeWidth: 2,
+                              strokeColor: '#333',
+                              align: 'middle'
+                          },
+                          width: 2,
+                          smooth: {
+                              enabled: true,
+                              type: "continuous"
+                          },
+                          arrows: {
+                            to: { enabled: true, scaleFactor: 0.7 }
+                          },
+                          shadow: {
+                              enabled: true,
+                              color: 'rgba(0,0,0,0.7)',
+                              size: 5,
+                              x: 2,
+                              y: 2
+                          }
+                      },
+                      interaction: {
+                          dragNodes: true,
+                          hover: true,
+                          tooltipDelay: 200
+                      },
+                      physics: {
+                          barnesHut: {
+                              gravitationalConstant: -40000,
+                              centralGravity: 0.1,
+                              springLength: 250,
+                              springConstant: 0.05,
+                              damping: 0.15
+                          },
+                          solver: 'barnesHut',
+                          stabilization: {
+                              iterations: 2500
+                          }
+                      }
+                  };
+
+                  const network = new vis.Network(container, data, options);
+                  return network;
+              }
+
+              drawGraph();
+        </script>
+    </body>
+</html>
