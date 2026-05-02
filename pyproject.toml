@@ -4,24 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "poetic_ontology_builder"
-version = "1.0.1"
+version = "1.1.0"
 description = "A tool for generating ontological knowledge graphs with emotional embeddings from text."
 authors = [
     { name = "Willinton Triana Cardona" }
 ]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 keywords = ["ontology", "emotions", "knowledge graph", "AI", "poetic computing"]
 
 dependencies = [
-    "transformers>=4.32.0",
+    "transformers>=4.46.0",
     "torch>=2.0.0",
-    "matplotlib",
-    "pyvis",
+    "matplotlib>=3.8.0",
+    "pyvis>=0.3.2",
+    "numpy>=1.24.0",
     "owlready2",
     "python-dotenv",
-    "google-generativeai",
+    "google-generativeai>=0.8.0",
 ]
 
 [project.urls]

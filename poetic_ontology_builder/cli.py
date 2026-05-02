@@ -53,10 +53,13 @@ def main():
     print(f" - Graph: {os.path.join(run_dir, 'sublime_graph.html')}")
     print(f" - Emotion stats: {os.path.join(run_dir, 'emotion_stats.json')}")
     print(f" - Emotion chart: {os.path.join(run_dir, 'emotion_stats.png')}")
+    print(f" - Enneagram stats: {os.path.join(run_dir, 'enneagram_stats.json')}")
+    print(f" - Enneagram chart: {os.path.join(run_dir, 'enneagram_chart.png')}")
 
     if args.open:
         safe_open(os.path.join(run_dir, "sublime_graph.html"))
         safe_open(os.path.join(run_dir, "emotion_stats.png"))
+        safe_open(os.path.join(run_dir, "enneagram_chart.png"))
 
 
 if __name__ == "__main__":

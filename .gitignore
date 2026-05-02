@@ -40,6 +40,12 @@ Thumbs.db
 # Outputs
 outputs/
 
+# PyVis auto-generated static assets
+lib/
+
+# Test / scratch files
+test.txt
+
 # Sensitive configs
 *.pem
 *.key
